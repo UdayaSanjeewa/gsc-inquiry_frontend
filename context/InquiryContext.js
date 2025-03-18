@@ -21,6 +21,7 @@ export const InquiryProvider = ({ children }) => {
         `${process.env.NEXT_PUBLIC_API_URL}/inquiry`
       );
       // setInquiries(response.data);
+      
       if (response) {
         setInquiries(response.data);
       }

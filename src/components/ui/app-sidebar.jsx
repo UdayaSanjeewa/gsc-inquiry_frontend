@@ -1,6 +1,7 @@
 "use client";
 import {
   GalleryThumbnails,
+  UsersRound,
   CalendarCheck,
   Calendar,
   TvMinimal,
@@ -28,6 +29,12 @@ const items = [
     title: "All Inquiries",
     url: "/",
     icon: GalleryThumbnails,
+    onlyForAdmin: true,
+  },
+  {
+    title: "Users",
+    url: "/users",
+    icon: UsersRound,
     onlyForAdmin: true,
   },
   {

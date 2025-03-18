@@ -11,7 +11,7 @@ const statusColors = {
   Resolved: "bg-gray-500",
 };
 
-function page() {
+function Inquiries() {
   // Getting User Role
   const { isSignedIn = false, user } = useUser();
   const [isClient, setIsClient] = useState(false);
@@ -71,4 +71,4 @@ function page() {
   );
 }
 
-export default page;
+export default Inquiries;

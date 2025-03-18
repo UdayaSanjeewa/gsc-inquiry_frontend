@@ -15,7 +15,7 @@ export const ChannelProvider = ({ children }) => {
   const getAllChannels = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3001/api/v1/channel`
+        `${process.env.NEXT_PUBLIC_API_URL}/channel`
       );
       if (response) {
         console.log("Fetched Channels:", response.data); // Log response data

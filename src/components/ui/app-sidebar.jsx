@@ -21,7 +21,8 @@ import UserDetails from "@/ui-core/components/organisms/UserDetails";
 import gscLogo from "/public/gcs-logo.png";
 import Image from "next/image";
 import { useUser } from "@clerk/nextjs";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import ChannelContext from "../../../context/channelContext";
 
 // Menu items.
 const items = [
@@ -63,10 +64,37 @@ const items = [
 export function AppSidebar() {
   const { isSignedIn = false, user } = useUser();
   const [isClient, setIsClient] = useState(false);
+  const { getChannelById } = useContext(ChannelContext);
+  const [channels, setChannels] = useState([]);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
+
+  useEffect(() => {
+    const fetchChannels = async () => {
+      if (!user) return;
+      
+      let channelIds = user?.publicMetadata?.channel; // Correctly accessing "channel"
+      console.log("Channel IDs from metadata:", channelIds);
+  
+      if (Array.isArray(channelIds) && channelIds.length > 0) {
+        const fetchedChannels = await Promise.all(
+          channelIds.map(async (id) => {
+            const channel = await getChannelById(id);
+            console.log("Fetched channel:", channel);
+            return channel;
+          })
+        );
+  
+        setChannels(fetchedChannels.filter(Boolean)); // Remove null values
+      }
+    };
+  
+    fetchChannels();
+  }, [user, getChannelById]);
+  
+  
 
   if (!isClient) return null;
 
@@ -98,6 +126,17 @@ export function AppSidebar() {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+              {/* Display fetched channels */}
+              {channels.length > 0 && (
+                <div className="p-4 mt-4 bg-gray-100 rounded-md">
+                  <h2 className="text-lg font-semibold">Channels</h2>
+                  {channels.map((channel) => (
+                    <div key={channel._id} className="mt-2">
+                      <h3 className="font-medium">{channel.title}</h3>
+                    </div>
+                  ))}
+                </div>
+              )}
               <UserDetails />
             </SidebarMenu>
           </SidebarGroupContent>

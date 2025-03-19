@@ -25,7 +25,23 @@ export const ChannelProvider = ({ children }) => {
       console.error("Error fetching data", error);
       setError("Failed to fetch channels");
     }
-  };  
+  };
+
+  // Get a single channel by ID
+const getChannelById = async (id) => {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_API_URL}/channel/${id}`
+    );
+    if (response) {
+      return response.data; // Return channel data
+    }
+  } catch (error) {
+    console.error("Error fetching channel by ID", error);
+    setError(error?.response?.data?.message || "Failed to fetch channel");
+    return null;
+  }
+};
 
   // Add a new channel
   const newChannel = async (channel) => {
@@ -92,6 +108,7 @@ export const ChannelProvider = ({ children }) => {
         loading,
         channels,
         getAllChannels,
+        getChannelById,
         newChannel,
         updateChannel,
         deleteChannel,

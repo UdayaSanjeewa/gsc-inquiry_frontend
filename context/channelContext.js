@@ -18,7 +18,7 @@ export const ChannelProvider = ({ children }) => {
         `${process.env.NEXT_PUBLIC_API_URL}/channel`
       );
       if (response) {
-        console.log("Fetched Channels:", response.data); // Log response data
+        // console.log("Fetched Channels:", response.data); // Log response data
         setChannels(response.data);
       }
     } catch (error) {

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import React, { useContext, useEffect, useState } from "react";
 import InquiryContext from "../../../context/InquiryContext";
 import InquiriesTable from "@/ui-core/components/organisms/InquiriesTable";
+import AddInquiryPage from "@/ui-core/components/atoms/AddInquiryPage";
 
 const statusColors = {
   Open: "bg-green-500",
@@ -56,6 +57,7 @@ function Inquiries() {
 
   return (
     <div className="p-6">
+      <AddInquiryPage />
       <h1 className="mt-4 mb-6 text-3xl font-bold">Inquiries</h1>
 
       {/* Passing inquiries and userRole as props */}

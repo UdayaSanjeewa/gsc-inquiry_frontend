@@ -20,7 +20,7 @@ import {
 import UserDetails from "@/ui-core/components/organisms/UserDetails";
 import gscLogo from "/public/gcs-logo.png";
 import Image from "next/image";
-import { useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { useContext, useEffect, useState } from "react";
 import ChannelContext from "../../../context/channelContext";
 
@@ -99,6 +99,17 @@ export function AppSidebar() {
   if (!isClient) return null;
 
   const userRole = user?.publicMetadata?.role;
+
+  console.log("USER ROLE ================== ", userRole);
+  
+
+  if (userRole === undefined) {
+    return(
+      <div className="px-10 pt-10">
+        <UserDetails />
+      </div>
+    )
+  }
 
   return (
     <Sidebar>

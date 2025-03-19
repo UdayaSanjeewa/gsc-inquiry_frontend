@@ -16,6 +16,7 @@ import SubmitButton from "../atoms/SubmitButton";
 import NewComboBox from "./NewComboBox";
 import InquiryContext from "../../../../context/InquiryContext";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 // Yup validation schema
 const schema = yup.object().shape({
@@ -29,6 +30,11 @@ const schema = yup.object().shape({
 });
 
 function InquiryDetail({ inquiry }) {
+  // Getting User Role
+  const { isSignedIn = false, user } = useUser();
+  const [isClient, setIsClient] = useState(false);
+  const userRole = user?.publicMetadata?.role;
+
   const [isOpen, setIsOpen] = useState(false);
   const { updateInquiryStatus, setWorking } = useContext(InquiryContext);
   const router = useRouter();
@@ -100,7 +106,22 @@ function InquiryDetail({ inquiry }) {
                     <p className="text-red-600">{errors.degree}</p>
                   )}
                 </div>
-                <div className="flex flex-col gap-3">
+                {/* Conditionally render Status Combo Box */}
+                {userRole !== "channelOwner" && (
+                  <div className="flex flex-col gap-3">
+                    <NewComboBox
+                      title={"Status"}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      value={values.status}
+                      options={["Pending", "Completed", "Closed"]}
+                    />
+                    {errors.status && (
+                      <p className="text-red-600">{errors.status}</p>
+                    )}
+                  </div>
+                )}
+                {/* <div className="flex flex-col gap-3">
                   <NewComboBox
                     title={"Status"}
                     onBlur={handleBlur}
@@ -111,7 +132,7 @@ function InquiryDetail({ inquiry }) {
                   {errors.status && (
                     <p className="text-red-600">{errors.status}</p>
                   )}
-                </div>
+                </div> */}
                 <SubmitButton title={"Update"} type={"submit"} />
               </form>
             </DialogDescription>

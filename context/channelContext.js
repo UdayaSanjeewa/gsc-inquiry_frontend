@@ -101,25 +101,27 @@ export const ChannelProvider = ({ children }) => {
   };
 
   // Add this function inside ChannelProvider
-const updateUserChannels = async (userId, selectedChannels) => {
-  setWorking(true);
-  try {
-    const response = await axios.patch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/channels`,
-      { channels: selectedChannels }
-    );
+  const updateUserChannels = async (userId, selectedChannels) => {
+    setWorking(true);
+    try {
+      const response = await axios.patch(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/channels`,
+        { channels: selectedChannels }
+      );
 
-    if (response.data) {
-      toast.success("User channels updated successfully!");
-      return true;
+      if (response.data) {
+        toast.success("User channels updated successfully!");
+        return true;
+      }
+    } catch (error) {
+      console.error("Error updating user channels", error);
+      setError(
+        error?.response?.data?.message || "Failed to update user channels"
+      );
+    } finally {
+      setWorking(false);
     }
-  } catch (error) {
-    console.error("Error updating user channels", error);
-    setError(error?.response?.data?.message || "Failed to update user channels");
-  } finally {
-    setWorking(false);
-  }
-};
+  };
 
   // Delete a channel
   const deleteChannel = async (id) => {
@@ -134,6 +136,27 @@ const updateUserChannels = async (userId, selectedChannels) => {
       }
     } catch (error) {
       setError(error?.response?.data?.message || "Failed to delete channel");
+    }
+  };
+
+  // Add this function inside ChannelProvider
+  const deleteUser = async (userId) => {
+    setWorking(true); // Set working state to true while performing the operation
+    try {
+      // Send a DELETE request to the API to delete the user by ID
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`
+      );
+
+      if (response.data) {
+        toast.success("User deleted successfully!");
+        return true; // Return true if the user was deleted successfully
+      }
+    } catch (error) {
+      console.error("Error deleting user", error);
+      setError(error?.response?.data?.message || "Failed to delete user");
+    } finally {
+      setWorking(false); // Set working state to false after the operation
     }
   };
 
@@ -155,6 +178,7 @@ const updateUserChannels = async (userId, selectedChannels) => {
         updateChannel,
         updateUserChannels,
         deleteChannel,
+        deleteUser,
         setLoading,
         clearErrors,
       }}

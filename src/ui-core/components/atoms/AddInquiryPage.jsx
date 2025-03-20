@@ -587,6 +587,9 @@ function AddInquiryPage() {
 
   const userRole = user?.publicMetadata?.role;
   const userChannelIds = user?.publicMetadata?.channel || [];
+  console.log("USER ROLE ", userRole);
+  console.log("USER CHANNEL IDS ", userChannelIds);
+  
 
   const isChannelOwner = userRole === "channelOwner";
   const channelOwnerId = isChannelOwner && userChannelIds.length > 0 ? userChannelIds[0] : "";
@@ -597,7 +600,8 @@ function AddInquiryPage() {
     } else {
       getAllChannels();
     }
-  }, [userRole, channelOwnerId, getAllChannels]);
+  // }, [userRole, channelOwnerId, getAllChannels]);
+  }, []);
 
   useEffect(() => {
     if (userRole === "admin") {
@@ -605,7 +609,8 @@ function AddInquiryPage() {
     } else {
       setFilteredChannels(channels.filter(channel => userChannelIds.includes(channel._id)));
     }
-  }, [channels, userRole, userChannelIds]);
+  // }, [channels, userRole, userChannelIds]);
+  }, [channels]);
 
   const {
     values,

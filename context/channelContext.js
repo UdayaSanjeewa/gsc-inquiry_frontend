@@ -10,9 +10,11 @@ export const ChannelProvider = ({ children }) => {
   const [channels, setChannels] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [working, setWorking] = useState(false);
 
   // Fetch all channels
   const getAllChannels = async () => {
+    setWorking(true);
     try {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_API_URL}/channel`
@@ -20,28 +22,46 @@ export const ChannelProvider = ({ children }) => {
       if (response) {
         // console.log("Fetched Channels:", response.data); // Log response data
         setChannels(response.data);
+        setWorking(false);
       }
     } catch (error) {
       console.error("Error fetching data", error);
       setError("Failed to fetch channels");
+      setWorking(false);
     }
   };
 
   // Get a single channel by ID
-const getChannelById = async (id) => {
-  try {
-    const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_API_URL}/channel/${id}`
-    );
-    if (response) {
-      return response.data; // Return channel data
+  const getChannelById = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/channel/${id}`
+      );
+      if (response) {
+        return response.data; // Return channel data
+      }
+    } catch (error) {
+      console.error("Error fetching channel by ID", error);
+      setError(error?.response?.data?.message || "Failed to fetch channel");
+      return null;
     }
-  } catch (error) {
-    console.error("Error fetching channel by ID", error);
-    setError(error?.response?.data?.message || "Failed to fetch channel");
-    return null;
-  }
-};
+  };
+
+  // Get a user by ID
+  const getUserById = async (userId) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}`
+      );
+      if (response) {
+        return response.data; // Return user data
+      }
+    } catch (error) {
+      console.error("Error fetching user by ID", error);
+      setError(error?.response?.data?.message || "Failed to fetch user");
+      return null;
+    }
+  };
 
   // Add a new channel
   const newChannel = async (channel) => {
@@ -80,6 +100,27 @@ const getChannelById = async (id) => {
     }
   };
 
+  // Add this function inside ChannelProvider
+const updateUserChannels = async (userId, selectedChannels) => {
+  setWorking(true);
+  try {
+    const response = await axios.patch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/${userId}/channels`,
+      { channels: selectedChannels }
+    );
+
+    if (response.data) {
+      toast.success("User channels updated successfully!");
+      return true;
+    }
+  } catch (error) {
+    console.error("Error updating user channels", error);
+    setError(error?.response?.data?.message || "Failed to update user channels");
+  } finally {
+    setWorking(false);
+  }
+};
+
   // Delete a channel
   const deleteChannel = async (id) => {
     try {
@@ -109,8 +150,10 @@ const getChannelById = async (id) => {
         channels,
         getAllChannels,
         getChannelById,
+        getUserById,
         newChannel,
         updateChannel,
+        updateUserChannels,
         deleteChannel,
         setLoading,
         clearErrors,

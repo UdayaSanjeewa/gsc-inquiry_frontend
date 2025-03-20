@@ -76,13 +76,13 @@ export function AppSidebar() {
       if (!user) return;
       
       let channelIds = user?.publicMetadata?.channel; // Correctly accessing "channel"
-      console.log("Channel IDs from metadata:", channelIds);
+      // console.log("Channel IDs from metadata:", channelIds);
   
       if (Array.isArray(channelIds) && channelIds.length > 0) {
         const fetchedChannels = await Promise.all(
           channelIds.map(async (id) => {
             const channel = await getChannelById(id);
-            console.log("Fetched channel:", channel);
+            // console.log("Fetched channel:", channel);
             return channel;
           })
         );
@@ -98,10 +98,7 @@ export function AppSidebar() {
 
   if (!isClient) return null;
 
-  const userRole = user?.publicMetadata?.role;
-
-  console.log("USER ROLE ================== ", userRole);
-  
+  const userRole = user?.publicMetadata?.role;  
 
   if (userRole === undefined) {
     return(

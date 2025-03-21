@@ -21,12 +21,28 @@ export const InquiryProvider = ({ children }) => {
         `${process.env.NEXT_PUBLIC_API_URL}/inquiry`
       );
       // setInquiries(response.data);
-      
+
       if (response) {
         setInquiries(response.data);
       }
     } catch (error) {
       console.error("Error fetching data", error);
+    }
+  };
+
+  // New function to get call attempts by inquiry ID
+  const getCallAttemptsByInquiryId = async (inquiryId) => {
+    try {
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}/call-attempt/inquiry/${inquiryId}`
+      );
+
+      if (response) {
+        return response.data; // Return the fetched call attempts data
+      }
+    } catch (error) {
+      console.error("Error fetching call attempts", error);
+      setError(error?.response?.data?.message);
     }
   };
 
@@ -44,6 +60,25 @@ export const InquiryProvider = ({ children }) => {
         return true;
       }
     } catch (error) {
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  // Function to add call attempt
+  const addCallAttempt = async (inquiryId, count) => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/call-attempt`,
+        { inquiryId, count }
+      );
+
+      if (response && response.data) {
+        // Optionally update the inquiries list or other states if needed
+        toast.success("Call attempt added successfully!");
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error adding call attempt", error);
       setError(error?.response?.data?.message);
     }
   };
@@ -196,9 +231,11 @@ export const InquiryProvider = ({ children }) => {
         getDailyInquiries,
         getMonthlyInquiries,
         getInquiriesByChannel,
+        getCallAttemptsByInquiryId,
         // generateCsv,
         newInquiry,
         addCommentToInquiry,
+        addCallAttempt,
         updateInquiryStatus,
         deleteInquiry,
         setLoading,

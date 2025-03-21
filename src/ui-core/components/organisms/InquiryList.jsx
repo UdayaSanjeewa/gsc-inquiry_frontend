@@ -41,15 +41,16 @@ export default function InquiryList() {
       : b[sortBy].localeCompare(a[sortBy]);
   });
 
+  // Fetch inquiries only on mount or when userRole changes (no dependency on 'working')
   useEffect(() => {
-    getAllInquries();
-  }, [working]);
+    getAllInquries();  // Fetch inquiries only when component mounts or userRole changes
+  }, [userRole]);  // Added userRole as a dependency, so the effect runs when the user role is updated
 
   const handleDeleteInquiry = (id) => {
     const result = deleteInquiry(id);
     if (result) {
       router.refresh();
-      setWorking(true);
+      setWorking(true); // This should not trigger re-fetch, but set the working state for other purposes
     }
   };
 

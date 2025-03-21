@@ -164,6 +164,7 @@ import {
   CalendarCheck,
   Calendar,
   TvMinimal,
+  Tv
 } from "lucide-react";
 
 import {
@@ -195,6 +196,12 @@ const items = [
     title: "Users",
     url: "/users",
     icon: UsersRound,
+    onlyForAdmin: true,
+  },
+  {
+    title: "Channels",
+    url: "/channels",
+    icon: Tv,
     onlyForAdmin: true,
   },
   {

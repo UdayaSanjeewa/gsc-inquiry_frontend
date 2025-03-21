@@ -83,7 +83,7 @@ export const ChannelProvider = ({ children }) => {
   // Update a channel
   const updateChannel = async (id, updatedChannel) => {
     try {
-      const { data } = await axios.put(
+      const { data } = await axios.patch(
         `${process.env.NEXT_PUBLIC_API_URL}/channel/${id}`,
         updatedChannel
       );

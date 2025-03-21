@@ -59,6 +59,11 @@ const InquiriesTable = ({
                 ))}
             </TableHead>
             <TableHead className="w-1/6">Status</TableHead>
+            <TableHead className="w-1/6 px-6">Channel</TableHead>
+            <TableHead className="w-1/4 px-10">Date</TableHead>
+            {userRole === "admin" && (
+              <TableHead className="w-1/4">Sales Person</TableHead>
+            )}
             <TableHead className="w-1/4 text-right">Actions</TableHead>
           </TableRow>
         </TableHeader>
@@ -77,6 +82,13 @@ const InquiriesTable = ({
                   {inquiry.status}
                 </Badge>
               </TableCell>
+              <TableCell>{inquiry.channelId.title}</TableCell>
+              <TableCell>
+                {new Date(inquiry.createdAt).toISOString().split("T")[0]}
+              </TableCell>
+              {userRole === "admin" && (
+                <TableCell>{inquiry.channelId.salesPerson}</TableCell>
+              )}
               <TableCell className="flex items-center justify-end gap-2 text-right">
                 {/* Show delete button only if the user is an admin */}
                 {userRole === "admin" && (

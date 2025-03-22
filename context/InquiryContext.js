@@ -203,6 +203,26 @@ export const InquiryProvider = ({ children }) => {
     }
   };
 
+  const getSalesPersons = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/sales-persons`);
+      return response.data; // Return the fetched sales persons data
+    } catch (error) {
+      console.error("Error fetching sales persons", error);
+      setError(error?.response?.data?.message);
+    }
+  };
+
+  const getChannelOwners = async () => {
+    try {
+      const response = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/channel-owners`);
+      return response.data; // Return the fetched channel owners data
+    } catch (error) {
+      console.error("Error fetching channel owners", error);
+      setError(error?.response?.data?.message);
+    }
+  };
+
   // Function to generate CSV from the inquiry data
   // const generateCsv = async (data) => {
   //   try {
@@ -232,6 +252,8 @@ export const InquiryProvider = ({ children }) => {
         getMonthlyInquiries,
         getInquiriesByChannel,
         getCallAttemptsByInquiryId,
+        getSalesPersons,
+        getChannelOwners,
         // generateCsv,
         newInquiry,
         addCommentToInquiry,

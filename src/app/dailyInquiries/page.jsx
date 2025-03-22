@@ -7,8 +7,14 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format } from "date-fns";
 import InquiriesTable from "@/ui-core/components/organisms/InquiriesTable";
+import { useUser } from "@clerk/nextjs";
 
 export default function DailyInquiriesPage() {
+    // Getting User Role
+    const { isSignedIn = false, user } = useUser();
+    const [isClient, setIsClient] = useState(false);
+    const userRole = user?.publicMetadata?.role;
+
   const { getDailyInquiries, deleteInquiry } = useContext(InquiryContext);
   const [dailyInquiries, setDailyInquiries] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -39,6 +45,23 @@ export default function DailyInquiriesPage() {
       router.refresh();
     }
   };
+
+  useEffect(() => {
+    if (userRole === "channelOwner" || userRole === "salesPerson") {
+      // Redirect to "/users" if the userRole is "channelOwner" or "salesPerson"
+      router.push("/inquiries");
+    }
+  }, [userRole, router]);
+
+  if (userRole === undefined) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <h1 className="text-2xl font-semibold text-gray-700 animate-pulse">
+          Role Must Be Assigned by Admin...
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

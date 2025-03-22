@@ -214,11 +214,13 @@ const items = [
     title: "Daily Inquiries",
     url: "/dailyInquiries",
     icon: CalendarCheck,
+    onlyForAdmin: true,
   },
   {
     title: "Monthly Inquiries",
     url: "/monthlyInquiries",
     icon: Calendar,
+    onlyForAdmin: true,
   },
   {
     title: "Inquiries by Channel",

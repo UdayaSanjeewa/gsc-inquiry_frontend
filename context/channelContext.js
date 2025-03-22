@@ -110,7 +110,6 @@ export const ChannelProvider = ({ children }) => {
       );
 
       if (response.data) {
-        toast.success("User channels updated successfully!");
         return true;
       }
     } catch (error) {

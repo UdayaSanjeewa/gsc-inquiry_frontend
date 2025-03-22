@@ -18,6 +18,13 @@ export default function InquiriesByChannelPage() {
   const router = useRouter();
 
   useEffect(() => {
+    if (userRole === "channelOwner") {
+      // Redirect to "/users" if the userRole is "channelOwner" or "salesPerson"
+      router.push("/inquiries");
+    }
+  }, [userRole, router]);
+
+  useEffect(() => {
     getAllChannels();
   }, []);
 
@@ -45,6 +52,16 @@ export default function InquiriesByChannelPage() {
       router.refresh();
     }
   };
+
+  if (userRole === undefined) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <h1 className="text-2xl font-semibold text-gray-700 animate-pulse">
+          Role Must Be Assigned by Admin...
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

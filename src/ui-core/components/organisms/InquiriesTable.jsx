@@ -69,14 +69,14 @@ const InquiriesTable = ({
         </TableHeader>
         <TableBody>
           {inquiries.map((inquiry) => (
-            <TableRow key={inquiry.id}>
-              <TableCell className="font-semibold">{inquiry.name}</TableCell>
-              <TableCell>{inquiry.mobileNumber}</TableCell>
-              <TableCell>{inquiry.degree}</TableCell>
+            <TableRow key={inquiry?.id}>
+              <TableCell className="font-semibold">{inquiry?.name}</TableCell>
+              <TableCell>{inquiry?.mobileNumber}</TableCell>
+              <TableCell>{inquiry?.degree}</TableCell>
               <TableCell>
                 <Badge
                   className={`text-white px-3 py-1 ${
-                    statusColors[inquiry.status]
+                    statusColors[inquiry?.status]
                   }`}
                 >
                   {inquiry.status}
@@ -87,7 +87,7 @@ const InquiriesTable = ({
                 {new Date(inquiry.createdAt).toISOString().split("T")[0]}
               </TableCell>
               {userRole === "admin" && (
-                <TableCell>{inquiry.channelId.salesPerson}</TableCell>
+                <TableCell>{inquiry?.channelId?.salesPerson}</TableCell>
               )}
               <TableCell className="flex items-center justify-end gap-2 text-right">
                 {/* Show delete button only if the user is an admin */}

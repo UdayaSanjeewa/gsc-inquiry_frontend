@@ -736,6 +736,15 @@ function Page() {
           <strong className="text-gray-900">Degree:</strong> {inquiry.degree}
         </p>
         <p className="text-gray-700">
+          <strong className="text-gray-900">Channel:</strong> {inquiry.channelId.title}
+        </p>
+        <p className="text-gray-700">
+          <strong className="text-gray-900">Time:</strong> {new Date(inquiry.createdAt).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      })}
+        </p>
+        <p className="text-gray-700">
           <strong className="text-gray-900">Status:</strong>
           <span
             className={`ml-2 px-2 py-1 rounded-full text-sm font-medium ${

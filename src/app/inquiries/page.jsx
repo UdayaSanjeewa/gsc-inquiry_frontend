@@ -179,6 +179,7 @@ function Inquiries() {
   }, []);
 
   const userRole = user?.publicMetadata?.role || "";
+  const router = useRouter();
   const { getInquiriesByChannel, deleteInquiry } = useContext(InquiryContext);
   const [channelInquiries, setChannelInquiries] = useState([]); // Ensure default is an empty array
   const [selectedChannel, setSelectedChannel] = useState(
@@ -209,6 +210,13 @@ function Inquiries() {
       ? a[sortBy].localeCompare(b[sortBy])
       : b[sortBy].localeCompare(a[sortBy]);
   });
+
+  useEffect(() => {
+    if (userRole === "admin") {
+      // Redirect to "/users" if the userRole is "channelOwner" or "salesPerson"
+      router.push("/");
+    }
+  }, [userRole, router]);
 
   return (
     <div className="p-6">

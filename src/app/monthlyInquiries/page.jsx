@@ -20,6 +20,9 @@ export default function MonthlyInquiriesPage() {
   const { isSignedIn = false, user } = useUser();
   const [isClient, setIsClient] = useState(false);
   const userRole = user?.publicMetadata?.role;
+
+    const router = useRouter();
+
   const { getMonthlyInquiries, deleteInquiry } = useContext(InquiryContext);
   const [monthlyInquiries, setMonthlyInquiries] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(new Date());
@@ -52,6 +55,23 @@ export default function MonthlyInquiriesPage() {
       setMonthlyInquiries((prev) => prev.filter((inq) => inq._id !== id));
     }
   };
+
+  useEffect(() => {
+    if (userRole === "channelOwner" || userRole === "salesPerson") {
+      // Redirect to "/users" if the userRole is "channelOwner" or "salesPerson"
+      router.push("/inquiries");
+    }
+  }, [userRole, router]);
+
+  if (userRole === undefined) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <h1 className="text-2xl font-semibold text-gray-700 animate-pulse">
+          Role Must Be Assigned by Admin...
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6">

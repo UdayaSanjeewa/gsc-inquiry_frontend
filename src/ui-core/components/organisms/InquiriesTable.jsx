@@ -82,7 +82,7 @@ const InquiriesTable = ({
                   {inquiry.status}
                 </Badge>
               </TableCell>
-              <TableCell>{inquiry.channelId.title}</TableCell>
+              <TableCell>{inquiry?.channelId?.title}</TableCell>
               <TableCell>
                 {new Date(inquiry.createdAt).toISOString().split("T")[0]}
               </TableCell>

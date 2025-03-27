@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import React from "react";
 
 function InputField(props) {
-  const { title, type, placeholder, name, value, onChange } = props;
+  const { title, type, placeholder, name, value, onChange, disabled=false } = props;
 
   return (
     <div className="flex flex-col gap-3">
@@ -15,6 +15,7 @@ function InputField(props) {
         value={value}
         onChange={onChange}
         required
+        disabled={disabled}
       />
     </div>
   );
